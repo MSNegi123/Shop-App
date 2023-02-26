@@ -1,28 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart.dart';
+import 'package:shop_app/widgets/badge.dart';
+import 'package:shop_app/widgets/productsGrid.dart';
 
-import '../widgets/productItem.dart';
-import '../providers/products.dart';
+import '../constants/constants.dart';
 
-class ProductsOverviewScreen extends StatelessWidget {
+class ProductsOverviewScreen extends StatefulWidget {
+  @override
+  _ProductsOverviewScreenState createState() => _ProductsOverviewScreenState();
+}
+
+class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
+  var _showFavourites = false;
+
   @override
   Widget build(BuildContext context) {
-    final _products = Provider.of<Products>(context).products;
-
-    return GridView.builder(
-      padding: const EdgeInsets.all(10),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 3 / 2,
-          crossAxisCount: 2),
-      itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-        // ChangeNotifierProvider(
-        // builder: (ctx)=> ProductModel(),
-        value: _products[i],
-        child: ProductItem(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Shop'),
+        actions: [
+          PopupMenuButton(
+            onSelected: (selectedItem) {
+              setState(() {
+                if (selectedItem == PopUpItems.Favourites) {
+                  _showFavourites = true;
+                } else {
+                  _showFavourites = false;
+                }
+              });
+            },
+            icon: Icon(Icons.more_vert_outlined),
+            itemBuilder: (ctx) => const [
+              PopupMenuItem(
+                child: Text('Only Favourites'),
+                value: PopUpItems.Favourites,
+              ),
+              PopupMenuItem(
+                child: Text('Show All'),
+                value: PopUpItems.All,
+              ),
+            ],
+          ),
+          Consumer<Cart>(
+            builder: (_, cart, _child) => Badge(
+              child: _child,
+              value: cart.getItemCount.toString(),
+            ),
+            child: IconButton(
+                icon: Icon(Icons.shopping_cart),
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(Routes.cartScreenRoute)),
+          ),
+        ],
       ),
-      itemCount: _products.length,
+      body: ProductsGrid(_showFavourites),
     );
   }
 }
