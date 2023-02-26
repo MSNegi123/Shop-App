@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart.dart';
 
-class CardItem extends StatelessWidget {
+class CartItem extends StatelessWidget {
   final String id;
   final String productId;
   final String title;
   final double price;
   final int quantity;
 
-  const CardItem(
+  const CartItem(
       {@required this.id,
       @required this.title,
       @required this.price,

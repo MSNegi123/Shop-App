@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/providers/cart.dart';
-import 'package:shop_app/widgets/badge.dart';
-import 'package:shop_app/widgets/productsGrid.dart';
 
+import '../providers/cart.dart';
+import '../widgets/appBarDrawer.dart';
+import '../widgets/badge.dart';
+import '../widgets/productsGrid.dart';
 import '../constants/constants.dart';
 
 class ProductsOverviewScreen extends StatefulWidget {
@@ -54,6 +55,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           ),
         ],
       ),
+      drawer: AppBarDrawer(),
       body: ProductsGrid(_showFavourites),
     );
   }
