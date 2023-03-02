@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/providers/orders.dart';
 
-import '../widgets/cardItem.dart';
+import '../providers/orders.dart';
+import '../widgets/cartItem.dart';
 import '../providers/cart.dart';
 
 class CartScreen extends StatelessWidget {
@@ -33,7 +33,7 @@ class CartScreen extends StatelessWidget {
                   Chip(
                     backgroundColor: Theme.of(context).primaryColor,
                     label: Text(
-                      '₹ ${_cart.totalAmount}',
+                      '₹ ${_cart.totalAmount.toStringAsFixed(2)}',
                       style: TextStyle(
                         color:
                             Theme.of(context).primaryTextTheme.headline6.color,

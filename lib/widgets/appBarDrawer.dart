@@ -16,13 +16,21 @@ class AppBarDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.shop),
             title: Text('Shop'),
-            onTap: ()=>Navigator.of(context).pushNamed('/'),
+            onTap: () => Navigator.of(context).pushNamed('/'),
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.payment),
             title: Text('Orders'),
-            onTap: ()=>Navigator.of(context).pushNamed(Routes.ordersScreenRoute),
+            onTap: () =>
+                Navigator.of(context).pushNamed(Routes.ordersScreenRoute),
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Manage Products'),
+            onTap: () => Navigator.of(context)
+                .pushNamed(Routes.manageProductsScreenRoute),
           ),
         ],
       ),
