@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/widgets/userProductItem.dart';
 
+import '../constants/constants.dart';
+import '../widgets/userProductItem.dart';
 import '../providers/products.dart';
 
 class UserProductsScreen extends StatelessWidget {
@@ -13,13 +14,16 @@ class UserProductsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Your Products'),
         actions: [
-          IconButton(icon: Icon(Icons.add), onPressed: (){}),
+          IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () => Navigator.of(context)
+                  .pushNamed(Routes.addProductScreenRoute)),
         ],
       ),
       body: ListView.builder(
         itemCount: productsData.length,
         itemBuilder: (_, index) => UserProductItem(
-            productsData[index].title, productsData[index].imageUrl),
+            productsData[index].id,productsData[index].title, productsData[index].imageUrl),
       ),
     );
   }
