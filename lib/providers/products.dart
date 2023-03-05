@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import './productModel.dart';
 
@@ -44,14 +46,32 @@ class Products with ChangeNotifier {
     return _products.where((product) => product.isFavourite).toList();
   }
 
-  void addProduct(ProductModel _newProduct) {
-    _products.add(ProductModel(
-        id: DateTime.now().toString(),
+  Future<void> addProduct(ProductModel _newProduct) {
+    final _url = Uri.https(
+        'shop-app-de205-default-rtdb.firebaseio.com', '/products');
+    return http.post(
+      _url,
+      body: json.encode({
+        'title': _newProduct.title,
+        'description': _newProduct.description,
+        'imageUrl': _newProduct.imageUrl,
+        'price': _newProduct.price,
+        'isFavourite': _newProduct.isFavourite,
+      }),
+    ).then((response) {
+      _products.add(ProductModel(
+        id: json.decode(response.body)['name'],
         title: _newProduct.title,
         description: _newProduct.description,
         imageUrl: _newProduct.imageUrl,
-        price: _newProduct.price));
-    notifyListeners();
+        price: _newProduct.price,
+        isFavourite: _newProduct.isFavourite,
+      ));
+      notifyListeners();
+    }).catchError((error){
+      print("$error");
+      throw error;
+    });
   }
 
   void updateProduct(String _productId, ProductModel _updatedProduct) {
@@ -61,7 +81,7 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteProduct(String _productId){
+  void deleteProduct(String _productId) {
     _products.removeWhere((product) => product.id == _productId);
     notifyListeners();
   }
