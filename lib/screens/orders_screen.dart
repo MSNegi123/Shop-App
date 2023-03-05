@@ -15,15 +15,17 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   void initState() {
-    setState(() {
-      _isLoading = true;
-    });
-    Future.delayed(Duration.zero).then((value) async {
-      await Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
-      setState(() {
-        _isLoading = false;
-      });
-    });
+    _isLoading = true;
+
+    // Future.delayed(Duration.zero).then((value) async {
+    Provider.of<Orders>(context, listen: false).fetchAndSetOrders().then(
+      (_) {
+        setState(() {
+          _isLoading = false;
+        });
+      },
+    );
+    // });
     super.initState();
   }
 
