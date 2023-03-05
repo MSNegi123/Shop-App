@@ -13,6 +13,7 @@ class ProductItem extends StatelessWidget {
     return
         //Consumer(builder: builder,_product,_child)=> ClipRRect(
         ClipRRect(
+      borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
           onTap: () => Navigator.of(context).pushNamed(
@@ -26,14 +27,17 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
             backgroundColor: Colors.black87,
-            title: Text(_product.title),
+            title: Text(
+              _product.title,
+              textAlign: TextAlign.center,
+            ),
             leading: Consumer<ProductModel>(
               builder: (ctx, _product, _) => IconButton(
                   icon: Icon(_product.isFavourite
                       ? Icons.favorite
                       : Icons.favorite_border),
                   color: Theme.of(context).accentColor,
-                  onPressed: _product.toggleFavouriteStatus),
+                  onPressed:()=> _product.toggleFavouriteStatus(_product.id)),
             ),
             trailing: IconButton(
                 icon: Icon(Icons.shopping_cart),

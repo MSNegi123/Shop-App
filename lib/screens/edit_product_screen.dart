@@ -66,7 +66,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveFormData() {
+  void _saveFormData() async {
     var _isFormValid = _formKey.currentState.validate();
     if (!_isFormValid) return;
     _formKey.currentState.save();
@@ -77,7 +77,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Products>(context, listen: false)
+      await Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
       Navigator.of(context).pop();
     } else {

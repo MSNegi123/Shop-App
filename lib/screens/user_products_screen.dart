@@ -20,11 +20,18 @@ class UserProductsScreen extends StatelessWidget {
                   .pushNamed(Routes.addProductScreenRoute)),
         ],
       ),
-      body: ListView.builder(
-        itemCount: productsData.length,
-        itemBuilder: (_, index) => UserProductItem(
-            productsData[index].id,productsData[index].title, productsData[index].imageUrl),
+      body: RefreshIndicator(
+        onRefresh:()=>_pullToRefresh(context),
+        child: ListView.builder(
+          itemCount: productsData.length,
+          itemBuilder: (_, index) => UserProductItem(
+              productsData[index].id,productsData[index].title, productsData[index].imageUrl),
+        ),
       ),
     );
+  }
+
+  Future<void> _pullToRefresh(BuildContext context) async {
+    await Provider.of<Products>(context).fetchAndSetProducts();
   }
 }
