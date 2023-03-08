@@ -47,9 +47,14 @@ class Products with ChangeNotifier {
     return _products.where((product) => product.isFavourite).toList();
   }
 
-  Future<void> fetchAndSetProducts() async {
-    final _url = Uri.https(
-        'shop-app-de205-default-rtdb.firebaseio.com', '/products.json');
+  final String userId;
+
+  Products(this.userId, this._products);
+
+  Future<void> fetchAndSetProducts([bool _filterByUser = false]) async {
+    var _filterString = _filterByUser?{'orderBy':'"creatorId"','equalTo':'"$userId"'}:{'':''};
+    var _url = Uri.https(
+        'shop-app-de205-default-rtdb.firebaseio.com', '/products.json',_filterString);
     try {
       final _response = await http.get(_url);
       final _fetchedProducts =
@@ -57,6 +62,10 @@ class Products with ChangeNotifier {
       if(_fetchedProducts==null){
         return;
       }
+      _url = Uri.https('shop-app-de205-default-rtdb.firebaseio.com',
+          '/userFavourites/$userId.json');
+      final _favouritesResponse = await http.get(_url);
+      final _favouritesData = json.decode(_favouritesResponse.body);
       final List<ProductModel> _productList = [];
       _fetchedProducts.forEach((_id, _product) {
         _productList.add(ProductModel(
@@ -65,7 +74,7 @@ class Products with ChangeNotifier {
             description: _product['description'],
             imageUrl: _product['imageUrl'],
             price: _product['price'],
-            isFavourite: _product['isFavourite']));
+            isFavourite: _favouritesData==null?false:_favouritesData[_id]??false));
       });
       _products = _productList;
       notifyListeners();
@@ -85,7 +94,7 @@ class Products with ChangeNotifier {
           'description': _newProduct.description,
           'imageUrl': _newProduct.imageUrl,
           'price': _newProduct.price,
-          'isFavourite': _newProduct.isFavourite,
+          'creatorId':userId,
         }),
       );
       _products.add(ProductModel(

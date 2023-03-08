@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,18 +18,18 @@ class ProductModel with ChangeNotifier {
       @required this.price,
       this.isFavourite = false});
 
-  void toggleFavouriteStatus(String _productId) async {
+  void toggleFavouriteStatus(String _productId, String _userId) async {
     final _oldStatus = isFavourite;
     isFavourite = !isFavourite;
     notifyListeners();
     final _url = Uri.https('shop-app-de205-default-rtdb.firebaseio.com',
-        '/products/$_productId.json');
+        '/userFavourites/$_userId/$_productId.json');
     try {
-      final _response = await http.patch(
+      final _response = await http.put(
         _url,
-        body: json.encode({
-          'isFavourite': isFavourite,
-        }),
+        body: json.encode(
+          isFavourite,
+        ),
       );
       if (_response.statusCode >= 400) {
         _setFavourite(_oldStatus);

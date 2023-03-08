@@ -9,10 +9,13 @@ class Orders with ChangeNotifier {
   List<OrderModel> _items = [];
 
   List<OrderModel> get items => [..._items];
+  final String _userId;
+
+  Orders(this._userId, this._items);
 
   Future<void> addOrders(List<CartModel> _cardItems, double _total) async {
-    final _url =
-        Uri.https('shop-app-de205-default-rtdb.firebaseio.com', '/orders.json');
+    final _url = Uri.https(
+        'shop-app-de205-default-rtdb.firebaseio.com', '/orders/$_userId.json');
     final _timeStamp = DateTime.now();
     await http.post(
       _url,
@@ -42,8 +45,8 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> fetchAndSetOrders() async {
-    final _url =
-        Uri.https('shop-app-de205-default-rtdb.firebaseio.com', '/orders.json');
+    final _url = Uri.https(
+        'shop-app-de205-default-rtdb.firebaseio.com', '/orders/$_userId.json');
     try {
       final _response = await http.get(_url);
       final _fetchedOrders =
@@ -57,14 +60,16 @@ class Orders with ChangeNotifier {
           id: _id,
           amount: _order['amount'],
           dateTime: DateTime.parse(_order['dateTime']),
-          products: (_order['products'] as List<dynamic>).map(
+          products: (_order['products'] as List<dynamic>)
+              .map(
                 (order) => CartModel(
                   id: order['id'],
                   title: order['title'],
                   price: order['price'],
                   quantity: order['quantity'],
                 ),
-              ).toList(),
+              )
+              .toList(),
         ));
       });
       _items = _ordersList.reversed.toList();
