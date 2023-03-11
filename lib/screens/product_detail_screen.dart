@@ -20,9 +20,12 @@ class ProductDetailScreen extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 10),
             height: MediaQuery.of(context).size.height * 0.33,
             width: double.infinity,
-            child: Image.network(
-              _product.imageUrl,
-              fit: BoxFit.cover,
+            child: Hero(
+              tag: _productId,
+              child: Image.network(
+                _product.imageUrl,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Text(

@@ -21,10 +21,13 @@ class ProductItem extends StatelessWidget {
           onTap: () => Navigator.of(context).pushNamed(
               Routes.productDetailScreenRoute,
               arguments: _product.id),
-          child: Image.network(
-            _product.imageUrl,
-            fit: BoxFit.cover,
-            // label: _child,
+          child: Hero(
+            tag: _product.id,
+            child: FadeInImage(
+              placeholder:AssetImage("assets/images/product-placeholder.png"),
+              image: NetworkImage(_product.imageUrl,),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         footer: GridTileBar(
