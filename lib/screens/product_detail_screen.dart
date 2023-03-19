@@ -11,35 +11,45 @@ class ProductDetailScreen extends StatelessWidget {
         .findProductById(_productId);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_product.title),
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            height: MediaQuery.of(context).size.height * 0.33,
-            width: double.infinity,
-            child: Hero(
-              tag: _productId,
-              child: Image.network(
-                _product.imageUrl,
-                fit: BoxFit.cover,
+      // appBar: AppBar(
+      //   title: Text(_product.title),
+      // ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: MediaQuery.of(context).size.height * 0.33,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(_product.title),
+              background: Hero(
+                tag: _productId,
+                child: Image.network(
+                  _product.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-          Text(
-            '₹ ${_product.price}',
-            style: TextStyle(color: Colors.grey, fontSize: 20),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Text(
-              '${_product.description}',
-              textAlign: TextAlign.center,
-              softWrap: true,
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Text(
+                  '₹ ${_product.price}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey, fontSize: 20),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    '${_product.description}',
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                ),
+                SizedBox(height:800,),
+              ],
             ),
-          )
+          ),
         ],
       ),
     );

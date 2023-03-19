@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/helpers/custom_route.dart';
+import 'package:shop_app/screens/orders_screen.dart';
 
 import '../providers/auth.dart';
 import '../constants/constants.dart';
@@ -24,8 +26,15 @@ class AppBarDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.payment),
             title: Text('Orders'),
-            onTap: () => Navigator.of(context)
-                .pushReplacementNamed(Routes.ordersScreenRoute),
+            onTap: () =>
+            //     Navigator.pushReplacement(
+            //   context,
+            //   CustomRoute(              /// For setting animation on single custom route
+            //     builder: (ctx) => OrdersScreen(),
+            //   ),
+            // ),
+            Navigator.of(context)
+            .pushReplacementNamed(Routes.ordersScreenRoute),
           ),
           Divider(),
           ListTile(
